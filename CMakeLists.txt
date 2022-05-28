@@ -7,7 +7,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 include(FeatureTests)
 
 Option(USE_UPSTREAM_LIBPQXX "Fetch and use libpqxx from Github.")
-
+set(THIRDPARTY_DIR "$ENV{SQLSMITH_THIRDPARTY}/")
 
 
 # define our executable early, so we can set the properties, based on our dependencies
@@ -73,6 +73,14 @@ if (MonetDB_FOUND)
     target_link_libraries(sqlsmith MonetDB::mapi)
 endif ()
 
+set(HAVE_DORIS 1)
+target_sources(sqlsmith PRIVATE doris.cc)
+add_library(mysql STATIC IMPORTED)
+set_target_properties(mysql PROPERTIES IMPORTED_LOCATION ${THIRDPARTY_DIR}/lib/libmysqlclient.a)
+include_directories(
+        SYSTEM
+        ${THIRDPARTY_DIR}/include
+)
 
 ## target configuration
 string(TOLOWER ${PROJECT_NAME} PACKAGE)

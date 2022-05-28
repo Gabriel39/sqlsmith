@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 #endif
         } else if (options.count("doris")) {
 #ifdef HAVE_DORIS
-            schema = make_shared<schema_doris>(options["doris"]);
+            schema = make_shared<schema_doris>(options["doris"], options.count("exclude-catalog"));
 #else
             cerr << "Sorry, "
             PACKAGE_NAME
